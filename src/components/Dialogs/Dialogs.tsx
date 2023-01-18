@@ -1,48 +1,51 @@
 import React from 'react';
 import s from './Dialogs.module.css';
-import {NavLink} from "react-router-dom";
+import {DialogItem} from "./DialogItem/DialogItem";
+import {Message} from "./Message/Message";
+import {DialogPageType} from "../../redux/state";
 
-type DialogsItem = {
-	id: number
-	name: string
+
+type StateDialogsType = {
+	state: DialogPageType
 }
 
-type MessageType = {
-	message: string
-}
+export const Dialogs = (props: StateDialogsType) => {
+	// let dialogs = [
+	// 	{id: 1, name: 'Romeo'},
+	// 	{id: 2, name: 'Nadin'},
+	// 	{id: 3, name: 'Ticko'},
+	// 	{id: 4, name: 'Sancho'},
+	// 	{id: 5, name: 'Bobby'},
+	// ]
+	//
+	// let messages = [
+	// 	{id: 1, message: 'Hi'},
+	// 	{id: 2, message: 'How are you?'},
+	// 	{id: 3, message: 'Hi'},
+	// ]
 
+	let dialogsElements = props.state.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
+	let messagesElements = props.state.messages.map(m => <Message message={m.message}/>)
 
-export const Message = (props: MessageType) => {
-	return (
-		<div className={s.message}>{props.message}</div>
-	);
-};
+	// let dialogsElements = dialogs.map((d) => {
+	// 	return (
+	// 		<DialogItem name={d.name} id={d.id}/>
+	// 	)
+	// })
+	//
+	// let messagesElements = messeges.map((m) => {
+	// 	return (
+	// 		<Message message={m.message}/>
+	// 	)
+	// })
 
-export const DialogItem = (props: DialogsItem) => {
-	let path = "/dialogs/" + props.id
-
-	return (
-		<div className={`${s.dialog} ${s.active}`}>
-			<NavLink to={path}>{props.name}</NavLink>
-		</div>
-	);
-};
-
-
-export const Dialogs = () => {
 	return (
 		<div className={s.dialogs}>
 			<div className={s.dialogItems}>
-				<DialogItem name="Romeo" id={1}/>
-				<DialogItem name="Nadin" id={2}/>
-				<DialogItem name="Ticko" id={3}/>
-				<DialogItem name="Sancho" id={4}/>
-				<DialogItem name="Bobby" id={5}/>
+				{dialogsElements}
 			</div>
 			<div className={s.messages}>
-				<Message message="Hi"/>
-				<Message message="How are you?"/>
-				<Message message="Hi"/>
+				{messagesElements}
 			</div>
 		</div>
 	);
