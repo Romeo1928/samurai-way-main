@@ -39,6 +39,12 @@ export const Dialogs = (props: StateDialogsType) => {
 	// 	)
 	// })
 
+	const newMessageElement:React.RefObject<HTMLTextAreaElement>= React.createRef();
+	const addMessage = () => {
+		let text = newMessageElement.current?.value
+		alert(text)
+	}
+
 	return (
 		<div className={s.dialogs}>
 			<div className={s.dialogItems}>
@@ -46,6 +52,15 @@ export const Dialogs = (props: StateDialogsType) => {
 			</div>
 			<div className={s.messages}>
 				{messagesElements}
+				<div>
+					<div>
+						<textarea ref={newMessageElement}></textarea>
+					</div>
+					<div>
+						<button onClick={ addMessage }>Add message</button>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	);

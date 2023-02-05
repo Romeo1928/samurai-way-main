@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {LegacyRef} from 'react';
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post";
 import {PostType, ProfilePageType} from "../../../redux/state";
 
-type MyPostsType ={
+type MyPostsType = {
 	posts: PostType[]
+	addPost: (postMessage: string) => void //может быть любое название (postMessage, p , message....) главное типизация
 }
 
 export const MyPosts = (props: MyPostsType) => {
@@ -14,21 +15,32 @@ export const MyPosts = (props: MyPostsType) => {
 	// 	{id: 2, message: "It's my first post", likesCount: 11},
 	// ]
 
-	let postsElements = props.posts.map((p)=>{
-		return(
+	let postsElements = props.posts.map((p) => {
+		return (
 			<Post message={p.message} likesCount={p.likesCount}/>
 		)
 	})
+
+	const newPostElement = React.createRef<HTMLTextAreaElement>();
+
+	const addPost = () => {
+
+		if (newPostElement.current) {
+			props.addPost(newPostElement.current.value)
+			newPostElement.current.value = ''
+		}
+
+	}
 
 	return (
 		<div className={s.postsBlock}>
 			<h3>My posts</h3>
 			<div>
 				<div>
-					<textarea></textarea>
+					<textarea ref={newPostElement}></textarea>
 				</div>
 				<div>
-					<button>Add post</button>
+					<button onClick={addPost}>Add post</button>
 				</div>
 			</div>
 			<div className={s.posts}>

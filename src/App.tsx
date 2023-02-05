@@ -10,25 +10,25 @@ import {Music} from "./components/Music/Music";
 import {News} from "./components/News/News";
 import {RootStateType} from "./redux/state";
 
-type StateType ={
+
+type StateType = {
 	state: RootStateType
+	addPost: (postMessage: string) => void //может быть любое название (postMessage, p , message....) главное типизация
 }
 
 const App = (props: StateType) => {
 	return (
-		<BrowserRouter>
-			<div className='app-wrapper'>
-				<Header/>
-				<Navbar/>
-				<div className='app-wrapper-content'>
-					<Route path='/profile' render={()=> <Profile state={props.state.profilePage}/>}/>
-					<Route path='/dialogs' render={()=><Dialogs state={props.state.dialogsPage}/>}/>
-					<Route path='/news' render={()=><News/>}/>
-					<Route path='/music' render={()=><Music/>}/>
-					<Route path='/settings' render={()=><Settings/>}/>
-				</div>
+		<div className='app-wrapper'>
+			<Header/>
+			<Navbar/>
+			<div className='app-wrapper-content'>
+				<Route path='/profile' render={() => <Profile state={props.state.profilePage} addPost={props.addPost}/>}/>
+				<Route path='/dialogs' render={() => <Dialogs state={props.state.dialogsPage}/>}/>
+				<Route path='/news' render={() => <News/>}/>
+				<Route path='/music' render={() => <Music/>}/>
+				<Route path='/settings' render={() => <Settings/>}/>
 			</div>
-		</BrowserRouter>
+		</div>
 	);
 }
 
