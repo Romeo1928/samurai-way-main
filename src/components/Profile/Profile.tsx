@@ -5,15 +5,20 @@ import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {ProfilePageType} from "../../redux/state";
 
 type StateProfileType = {
-	state: ProfilePageType
-	addPost: (postMessage: string) => void //может быть любое название (postMessage, p , message....) главное типизация
+	profilePage: ProfilePageType
+	addPost: (postText: string) => void //может быть любое название (postMessage, p ,message...) главное типизация
+	changeNewTextCallback: (newText: string) => void
 }
 
 export const Profile = (props: StateProfileType) => {
 	return (
 		<div>
 			<ProfileInfo/>
-			<MyPosts posts={props.state.posts} addPost={props.addPost}/>
+			<MyPosts posts={props.profilePage.posts}
+						newPostText={props.profilePage.newPostText}
+						addPost={props.addPost}
+						changeNewTextCallback={props.changeNewTextCallback}
+			/>
 		</div>
 	);
 };

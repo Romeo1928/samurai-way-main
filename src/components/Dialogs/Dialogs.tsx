@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './Dialogs.module.css';
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
@@ -6,61 +6,52 @@ import {DialogPageType} from "../../redux/state";
 
 
 type StateDialogsType = {
-	state: DialogPageType
+	dialogsPage: DialogPageType
+	addMessage: (postText: string) => void //может быть любое название (postMessage, p ,message...) главное типизация
+	newMessageText: string
+	changeNewMessageCallBack: (newMessage: string) => void
 }
 
 export const Dialogs = (props: StateDialogsType) => {
-	// let dialogs = [
-	// 	{id: 1, name: 'Romeo'},
-	// 	{id: 2, name: 'Nadin'},
-	// 	{id: 3, name: 'Ticko'},
-	// 	{id: 4, name: 'Sancho'},
-	// 	{id: 5, name: 'Bobby'},
-	// ]
-	//
-	// let messages = [
-	// 	{id: 1, message: 'Hi'},
-	// 	{id: 2, message: 'How are you?'},
-	// 	{id: 3, message: 'Hi'},
-	// ]
 
-	let dialogsElements = props.state.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
-	let messagesElements = props.state.messages.map(m => <Message message={m.message}/>)
+	let dialogsElements = props.dialogsPage.dialogs.map((d) => <DialogItem key={d.id} name={d.name} id={d.id}/>)
+	let messagesElements = props.dialogsPage.messages.map((m) => <Message key={m.id} message={m.message}/>)
 
-	// let dialogsElements = dialogs.map((d) => {
-	// 	return (
-	// 		<DialogItem name={d.name} id={d.id}/>
-	// 	)
-	// })
-	//
-	// let messagesElements = messeges.map((m) => {
-	// 	return (
-	// 		<Message message={m.message}/>
-	// 	)
-	// })
-
-	const newMessageElement:React.RefObject<HTMLTextAreaElement>= React.createRef();
+	// добавление message
 	const addMessage = () => {
-		let text = newMessageElement.current?.value
-		alert(text)
+		props.addMessage(props.newMessageText)
+	}
+
+	const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		props.changeNewMessageCallBack(e.currentTarget.value)
+	}
+
+	// по нажатию на 'Enter' отправляем message
+	const onKeyDownHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			addMessage()
+		}
 	}
 
 	return (
 		<div className={s.dialogs}>
-			<div className={s.dialogItems}>
+			<div className={s.dialogsItems}>
 				{dialogsElements}
 			</div>
 			<div className={s.messages}>
 				{messagesElements}
 				<div>
 					<div>
-						<textarea ref={newMessageElement}></textarea>
+						<textarea value={props.newMessageText}
+									 onChange={onChangeHandler}
+									 onKeyDown={onKeyDownHandler}
+						/>
 					</div>
 					<div>
-						<button onClick={ addMessage }>Add message</button>
+						<button onClick={addMessage}>Add message</button>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	);

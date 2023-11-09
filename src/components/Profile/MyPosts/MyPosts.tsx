@@ -1,35 +1,38 @@
-import React, {LegacyRef} from 'react';
+import React, {LegacyRef, KeyboardEvent, ChangeEvent} from 'react';
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post";
-import {PostType, ProfilePageType} from "../../../redux/state";
+import {PostType} from "../../../redux/state";
 
 type MyPostsType = {
 	posts: PostType[]
-	addPost: (postMessage: string) => void //может быть любое название (postMessage, p , message....) главное типизация
+	addPost: (postText: string) => void //может быть любое название (postMessage, p ,message...) главное типизация
+	newPostText: string
+	changeNewTextCallback: (newText: string) => void
 }
 
 export const MyPosts = (props: MyPostsType) => {
 
-	// let posts = [
-	// 	{id: 1, message: 'Hi, how are you', likesCount: 10 },
-	// 	{id: 2, message: "It's my first post", likesCount: 11},
-	// ]
-
 	let postsElements = props.posts.map((p) => {
 		return (
-			<Post message={p.message} likesCount={p.likesCount}/>
+			<Post key={p.id} message={p.message} likesCount={p.likesCount}/>
 		)
 	})
 
-	const newPostElement = React.createRef<HTMLTextAreaElement>();
-
+	// добавление post
 	const addPost = () => {
+		props.addPost(props.newPostText)
+	}
 
-		if (newPostElement.current) {
-			props.addPost(newPostElement.current.value)
-			newPostElement.current.value = ''
+	const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		props.changeNewTextCallback(e.currentTarget.value)
+	}
+
+	// по нажатию на 'Enter' отправляем post
+	const onKeyDownHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			addPost()
 		}
-
 	}
 
 	return (
@@ -37,16 +40,18 @@ export const MyPosts = (props: MyPostsType) => {
 			<h3>My posts</h3>
 			<div>
 				<div>
-					<textarea ref={newPostElement}></textarea>
+					<textarea value={props.newPostText}
+								 // ref={newPostElement}
+								 onChange={onChangeHandler}
+								 onKeyDown={onKeyDownHandler}
+					/>
 				</div>
-				<div>
+				<div className={s.button}>
 					<button onClick={addPost}>Add post</button>
 				</div>
 			</div>
 			<div className={s.posts}>
 				{postsElements}
-				{/*<Post message={postsData[0].message} likesCount={postsData[0].likesCount}/>*/}
-				{/*<Post message={postsData[1].message} likesCount={postsData[1].likesCount}/>*/}
 			</div>
 		</div>
 	);

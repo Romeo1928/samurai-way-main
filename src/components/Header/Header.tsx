@@ -4,7 +4,7 @@ import s from './Header.module.css'
 export const Header = () => {
 	return (
 		<header className={s.header}>
-			<img src="https://assets.turbologo.ru/blog/ru/2021/06/03041303/nike-logo-1978.png"/>
+			<img src="https://termodecor.ru/wa-data/public/shop/products/73/45/14573/images/25781/25781.600.jpg"/>
 		</header>
 	);
 };
