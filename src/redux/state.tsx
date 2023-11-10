@@ -1,5 +1,5 @@
-import {profileReducer} from "./profile-reducer";
-import {dialogsReducer} from "./dialogs-reducer";
+import {AddPostActionType, ChangeNewTextActionType, profileReducer} from "./profile-reducer";
+import {AddMessageActionType, ChangeNewMessageActionType, dialogsReducer} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 
 export type StoreType = {
@@ -67,38 +67,8 @@ export type ActionsTypes =
 // }
 
 // 2-й способ описания типов
-type AddPostActionType = ReturnType<typeof addPostAC>
-type ChangeNewTextActionType = ReturnType<typeof changeNewTextAC>
-type AddMessageActionType = ReturnType<typeof addMessageAC>
-type ChangeNewMessageActionType = ReturnType<typeof changeNewMessageAC>
 
-// Post
-export const addPostAC = (postText: string) => {
-	return {
-		type: "ADD-POST",
-		postText: postText
-	} as const
-}
-export const changeNewTextAC = (newText: string) => {
-	return {
-		type: "CHANGE-NEW-TEXT",
-		newText: newText
-	} as const
-}
 
-// Message
-export const addMessageAC = (newMessageText: string) => {
-	return {
-		type: "ADD-MESSAGE",
-		newMessageText: newMessageText
-	} as const
-}
-export const changeNewMessageAC = (newMessage: string) => {
-	return {
-		type: "CHANGE-NEW-MESSAGE",
-		newMessage: newMessage
-	} as const
-}
 
 // STORE
 export const store: StoreType = {
