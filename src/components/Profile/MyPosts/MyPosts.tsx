@@ -1,13 +1,14 @@
 import React, {LegacyRef, KeyboardEvent, ChangeEvent} from 'react';
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post";
-import {PostType} from "../../../redux/state";
+import {ActionsTypes, addPostAC, changeNewTextAC, PostType} from "../../../redux/state";
 
 type MyPostsType = {
 	posts: PostType[]
-	addPost: (postText: string) => void //может быть любое название (postMessage, p ,message...) главное типизация
+	// addPost: (postText: string) => void //может быть любое название (postMessage, p ,message...) главное типизация
 	newPostText: string
-	changeNewTextCallback: (newText: string) => void
+	// changeNewTextCallback: (newText: string) => void
+	dispatch: (action: ActionsTypes) => void
 }
 
 export const MyPosts = (props: MyPostsType) => {
@@ -20,11 +21,15 @@ export const MyPosts = (props: MyPostsType) => {
 
 	// добавление post
 	const addPost = () => {
-		props.addPost(props.newPostText)
+		// props.addPost(props.newPostText)
+		props.dispatch(addPostAC(props.newPostText))
 	}
 
 	const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		props.changeNewTextCallback(e.currentTarget.value)
+		// props.changeNewTextCallback(e.currentTarget.value)
+		const newText = e.currentTarget.value
+		props.dispatch(changeNewTextAC(newText))
+
 	}
 
 	// по нажатию на 'Enter' отправляем post
@@ -41,7 +46,7 @@ export const MyPosts = (props: MyPostsType) => {
 			<div>
 				<div>
 					<textarea value={props.newPostText}
-								 // ref={newPostElement}
+								 placeholder={"Enter your post"}
 								 onChange={onChangeHandler}
 								 onKeyDown={onKeyDownHandler}
 					/>

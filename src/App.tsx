@@ -20,6 +20,7 @@ type PropsType = {
 
 const App = (props: PropsType) => {
 	const state = props.store.getState()
+
 	return (
 		<div className='app-wrapper'>
 			<Header/>
@@ -27,14 +28,19 @@ const App = (props: PropsType) => {
 			<div className='app-wrapper-content'>
 				<Route path='/profile' render={() =>
 					<Profile profilePage={state.profilePage}
-								addPost={props.store.addPost.bind(props.store)}
-								changeNewTextCallback={props.store.changeNewText.bind(props.store)}/>}
+								dispatch={props.store.dispatch.bind(props.store)}
+								// addPost={props.store.addPost.bind(props.store)}
+								// changeNewTextCallback={props.store.changeNewText.bind(props.store)}
+
+					/>}
 				/>
 				<Route path='/dialogs' render={() =>
 					<Dialogs dialogsPage={state.dialogsPage}
 								newMessageText={state.dialogsPage.newMessageText}
-								addMessage={props.store.addMessage.bind(props.store)}
-								changeNewMessageCallBack={props.store.changeNewMessage.bind(props.store)}/>}
+								// addMessage={props.store.addMessage.bind(props.store)}
+								dispatch={props.store.dispatch.bind(props.store)}
+								// changeNewMessageCallBack={props.store.changeNewMessage.bind(props.store)}
+					/>}
 				/>
 				<Route path='/news' render={() => <News/>}/>
 				<Route path='/music' render={() => <Music/>}/>
